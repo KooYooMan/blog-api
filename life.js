@@ -10,14 +10,6 @@ const event_end_date = (e) => {
   else return new Date(e.date_start);
 }
 
-events = events.sort((e1, e2) => {
-  let e1ref = event_end_date(e1);
-  let e2ref = event_end_date(e2);
-  if (e2ref > e1ref) return 1;
-  else if (e2ref < e1ref) return -1;
-  else return 0;
-})
-
 const get_end = () => {
   return end_date
 }
@@ -95,6 +87,13 @@ const render_all_weeks = (list_event) => {
     title: event.title,
     color: event.color
   }));
+  events = events.sort((e1, e2) => {
+    let e1ref = event_end_date(e1);
+    let e2ref = event_end_date(e2);
+    if (e2ref > e1ref) return 1;
+    else if (e2ref < e1ref) return -1;
+    else return 0;
+  });
   let weeks = [];
   all_weeks((start, end) => {
     weeks.push(get_events_in_week(start, end));
