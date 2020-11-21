@@ -30,7 +30,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     // return updated list
     dbCollection.find().toArray((error, result) => {
       if (error) throw error;
-      response.json(life.render_all_weeks(result));
+      response.json({list_tooltip: life.render_all_weeks(result)});
     });
   });
 
