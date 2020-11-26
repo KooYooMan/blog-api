@@ -30,7 +30,15 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     // return updated list
     dbCollection.find().toArray((error, result) => {
       if (error) throw error;
-      response.json({list_tooltip: life.render_all_weeks(result)});
+      let today = new Date();
+      let dd = String(today.getDate()).padStart(2, '0');
+      let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      let yyyy = today.getFullYear();
+      today = dd + '/' + mm + '/' + yyyy;
+      response.json({
+        today: today,
+        list_tooltip: life.render_all_weeks(result)
+      },);
     });
   });
 
