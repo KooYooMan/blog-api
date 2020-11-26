@@ -2,8 +2,10 @@ const birthday = new Date("2000-12-19")
 const end_date = new Date("2070-12-19")
 const birthday_color = '#F89542'
 const default_color = '#1AA9FF'
+const today_color = "#110C03"
 
 let events = [];
+let today = new Date("2000-12-19")
 
 const event_end_date = (e) => {
   if (e.date_end) return new Date(e.date_end)
@@ -41,9 +43,12 @@ const get_events_in_week = (week_start, week_end) => {
 
   _events = _events.map(value => value.title)
 
+  let week_start_backup = new Date(week_start);
+
   if (birthday) {
     let age = 0;
     let bd_in_week = false;
+    let today_in_week = false;
     while (week_start < week_end) {
       if (week_start.getMonth() == birthday.getMonth() && week_start.getDate() == birthday.getDate()) {
         bd_in_week = true;
@@ -52,6 +57,15 @@ const get_events_in_week = (week_start, week_end) => {
       }
       week_start.setDate(week_start.getDate() + 1);
     }
+
+    while (week_start_backup < week_end) {
+      if (week_start_backup.getMonth() == today.getMonth() && week_start_backup.getDate() == today.getDate() && week_start_backup.getFullYear() == today.getFullYear()) {
+        today_in_week = true;
+        break;
+      }
+      week_start_backup.setDate(week_start_backup.getDate() + 1);
+    }
+
     if (bd_in_week) {
       color = birthday_color;
       let title;
@@ -60,6 +74,13 @@ const get_events_in_week = (week_start, week_end) => {
       } else {
         title = `I turn ${age} on ${birthday.getDate()}/${birthday.getMonth() + 1}`;
       }
+      _events.push(title);
+    }
+
+    if (today_in_week) {
+      color = today_color;
+      let title;
+      title = `Today is ${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`
       _events.push(title);
     }
   }
@@ -80,7 +101,7 @@ const all_weeks = (fn) => {
   }
 }
 
-const render_all_weeks = (list_event) => {
+const render_all_weeks = (list_event, today_) => {
   events = list_event.map(event => ({
     date_start: new Date(event.date_start),
     date_end: new Date(event.date_end),
@@ -94,6 +115,7 @@ const render_all_weeks = (list_event) => {
     else if (e2ref < e1ref) return -1;
     else return 0;
   });
+  today = new Date(today_);
   let weeks = [];
   all_weeks((start, end) => {
     weeks.push(get_events_in_week(start, end));
