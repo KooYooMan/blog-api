@@ -13,6 +13,7 @@ const port = process.env.PORT || 3000;
 
 // << db setup >>
 const db = require("./db");
+const { response } = require("express");
 const dbName = "Blog";
 const collectionName = "Life";
 
@@ -33,6 +34,18 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
       let today = new Date();
       response.json({
         list_tooltip: life.render_all_weeks(result, today)
+      },);
+    });
+  });
+
+  server.get("/vertical-timeline", (request, response) => {
+    // return updated list
+    dbCollection.find().toArray((error, result) => {
+      if (error) throw error;
+      let today = new Date();
+      console.log(result);
+      response.json({
+        list_events: result
       },);
     });
   });
