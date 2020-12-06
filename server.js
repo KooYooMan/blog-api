@@ -42,10 +42,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     // return updated list
     dbCollection.find().toArray((error, result) => {
       if (error) throw error;
-      let today = new Date();
-      console.log(result);
       response.json({
-        list_events: result
+        list_events: life.sort_list_events(result)
       },);
     });
   });

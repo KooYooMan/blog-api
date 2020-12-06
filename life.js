@@ -7,6 +7,10 @@ const today_color = "#110C03"
 let events = [];
 let today = new Date("2000-12-19")
 
+const event_start_date = (e) => {
+  return new Date(e.date_start)
+}
+
 const event_end_date = (e) => {
   if (e.date_end) return new Date(e.date_end)
   else return new Date(e.date_start);
@@ -101,6 +105,17 @@ const all_weeks = (fn) => {
   }
 }
 
+const sort_list_events = (events) => {
+  sorted_events = events.sort((e1, e2) => {
+    let e1ref = event_start_date(e1);
+    let e2ref = event_start_date(e2);
+    if (e2ref > e1ref) return 1;
+    else if (e2ref < e1ref) return -1;
+    else return 0;
+  });
+  return sorted_events;
+}
+
 const render_all_weeks = (list_event, today_) => {
   events = list_event.map(event => ({
     date_start: new Date(event.date_start),
@@ -124,5 +139,6 @@ const render_all_weeks = (list_event, today_) => {
 }
 
 module.exports = {
-  render_all_weeks
+  render_all_weeks,
+  sort_list_events
 };
